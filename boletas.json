@@ -13,7 +13,9 @@
   },
   {
     "numero": 3,
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "juan pérez",
+    "telefono": "3219779439"
   },
   {
     "numero": 4,
