@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Confirmar Boletas</title>
+</head>
+<body>
+  <script>
+    const clave = prompt("Clave de acceso:");
+    fetch('/.netlify/functions/confirmar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ auth: clave })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (!data || !Array.isArray(data.boletas)) return alert("Acceso denegado");
+      document.body.innerHTML = '<h1>Panel Admin</h1>';
+      data.boletas.filter(b => b.estado === 'pendiente').forEach(b => {
+        const btn = document.createElement('button');
+        btn.textContent = `Confirmar boleta ${b.numero}`;
+        btn.onclick = () => {
+          fetch('/.netlify/functions/confirmar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ auth: clave, confirmar: b.numero })
+          }).then(() => location.reload());
+        };
+        document.body.appendChild(btn);
+        document.body.appendChild(document.createElement('br'));
+      });
+    });
+  </script>
+</body>
+</html>
