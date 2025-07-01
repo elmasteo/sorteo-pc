@@ -1,5 +1,11 @@
 [
   {
+    "numero": 00,
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
+  },
+  {
     "numero": 01,
     "estado": "libre",
     "nombre": "",
@@ -589,12 +595,6 @@
   },
   {
     "numero": 99,
-    "estado": "libre",
-    "nombre": "",
-    "telefono": ""
-  },
-  {
-    "numero": 100,
     "estado": "libre",
     "nombre": "",
     "telefono": ""

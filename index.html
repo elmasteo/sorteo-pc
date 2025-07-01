@@ -100,7 +100,7 @@
         boletas.forEach(b => {
           const div = document.createElement('div');
           div.className = `boleta ${b.estado}`;
-          div.textContent = b.numero;
+          div.textContent = b.numero.toString().padStart(2, '0');
           if (b.estado === 'libre') {
             div.onclick = () => seleccionar(b.numero);
           }
@@ -110,7 +110,7 @@
 
     function seleccionar(num) {
       seleccionada = num;
-      document.getElementById('boletaNum').textContent = num;
+      document.getElementById('boletaNum').textContent = num.toString().padStart(2, '0');
       document.getElementById('modalOverlay').style.display = 'flex';
     }
 
