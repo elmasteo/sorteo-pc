@@ -25,7 +25,9 @@
   },
   {
     "numero": 5,
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Santiago gomez",
+    "telefono": "3157862008"
   },
   {
     "numero": 6,
