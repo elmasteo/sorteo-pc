@@ -140,7 +140,9 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ numero: seleccionada, nombre, telefono })
-      }).then(() => location.reload());
+      }).then(() => {
+        setTimeout(() => location.reload(), 1800);
+      });
     };
 
     document.getElementById('modalOverlay').addEventListener('click', (e) => {
