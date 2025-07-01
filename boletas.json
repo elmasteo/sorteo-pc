@@ -13,9 +13,7 @@
   },
   {
     "numero": 3,
-    "estado": "pendiente",
-    "nombre": "Juan poronga",
-    "telefono": "3102990660"
+    "estado": "libre"
   },
   {
     "numero": 4,
