@@ -100,7 +100,7 @@
         boletas.forEach(b => {
           const div = document.createElement('div');
           div.className = `boleta ${b.estado}`;
-          div.textContent = b.numero.toString().padStart(2, '0');
+          div.textContent = b.numero;
           if (b.estado === 'libre') {
             div.onclick = () => seleccionar(b.numero);
           }
