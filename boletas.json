@@ -1,54 +1,60 @@
 [
   {
-    "numero": 1,
+    "numero": 00,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 2,
+    "numero": 01,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 3,
+    "numero": 02,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 4,
+    "numero": 03,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 5,
+    "numero": 04,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 6,
+    "numero": 05,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 7,
+    "numero": 06,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 8,
+    "numero": 07,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
   },
   {
-    "numero": 9,
+    "numero": 08,
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
+  },
+  {
+    "numero": 09,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
@@ -589,12 +595,6 @@
   },
   {
     "numero": 99,
-    "estado": "libre",
-    "nombre": "",
-    "telefono": ""
-  },
-  {
-    "numero": 100,
     "estado": "libre",
     "nombre": "",
     "telefono": ""
