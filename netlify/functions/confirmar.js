@@ -7,7 +7,7 @@ exports.handler = async (event) => {
   const body = JSON.parse(event.body);
   if (body.auth !== PASSWORD) return { statusCode: 401, body: 'No autorizado' };
 
-  const file = path.join(__dirname, '../../data/boletas.json');
+  const file = path.join(__dirname, '../../boletas.json');
   const data = JSON.parse(fs.readFileSync(file));
 
   if (body.confirmar) {
