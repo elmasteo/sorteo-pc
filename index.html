@@ -60,60 +60,64 @@
   </div>
 
   <script>
-    let seleccionada = null;
-    fetch('boletas.json')
-      .then(res => res.json())
-      .then(boletas => {
-        const contenedor = document.getElementById('boletas');
-        boletas.forEach(b => {
-          const div = document.createElement('div');
-          div.className = `boleta ${b.estado}`;
-          div.textContent = b.numero;
-          if (b.estado === 'libre') {
-            div.onclick = () => seleccionar(b.numero);
-          }
-          contenedor.appendChild(div);
-        });
-      });
+   let seleccionada = null;
 
-    function seleccionar(num) {
-      seleccionada = num;
-      document.getElementById('boletaNum').textContent = num;
-      document.getElementById('modalOverlay').style.display = 'flex';
-    }
-
-    document.getElementById('reservaForm').onsubmit = e => {
-      e.preventDefault();
-      const telefonoInput = document.getElementById('telefono');
-      telefonoInput.addEventListener('input', () => {
-        // Reemplaza todo lo que no sea dígito con vacío
-        telefonoInput.value = telefonoInput.value.replace(/\D/g, '');
-      });
-
-      const nombre = document.getElementById('nombre').value.trim();
-      const error = document.getElementById('errorTelefono');
-
-      if (!/^\d{10}$/.test(telefono)) {
-        error.style.display = 'block';
-        return;
-      } else {
-        error.style.display = 'none';
+fetch('boletas.json')
+  .then(res => res.json())
+  .then(boletas => {
+    const contenedor = document.getElementById('boletas');
+    boletas.forEach(b => {
+      const div = document.createElement('div');
+      div.className = `boleta ${b.estado}`;
+      div.textContent = b.numero;
+      if (b.estado === 'libre') {
+        div.onclick = () => seleccionar(b.numero);
       }
-
-      fetch('/.netlify/functions/reservar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ numero: seleccionada, nombre, telefono })
-      }).then(() => location.reload());
-    };
-
-    // Cerrar modal al hacer click fuera del formulario
-    document.getElementById('modalOverlay').addEventListener('click', (e) => {
-      if (e.target.id === 'modalOverlay') {
-        e.target.style.display = 'none';
-        document.getElementById('errorTelefono').style.display = 'none';
-      }
+      contenedor.appendChild(div);
     });
+  });
+
+function seleccionar(num) {
+  seleccionada = num;
+  document.getElementById('boletaNum').textContent = num;
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+const telefonoInput = document.getElementById('telefono');
+// Limitar input solo a números mientras escribe
+telefonoInput.addEventListener('input', () => {
+  telefonoInput.value = telefonoInput.value.replace(/\D/g, '');
+});
+
+document.getElementById('reservaForm').onsubmit = e => {
+  e.preventDefault();
+
+  const telefono = telefonoInput.value.trim();
+  const nombre = document.getElementById('nombre').value.trim();
+  const error = document.getElementById('errorTelefono');
+
+  if (!/^\d{10}$/.test(telefono)) {
+    error.style.display = 'block';
+    return;
+  } else {
+    error.style.display = 'none';
+  }
+
+  fetch('/.netlify/functions/reservar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ numero: seleccionada, nombre, telefono })
+  }).then(() => location.reload());
+};
+
+// Cerrar modal al hacer click fuera del formulario
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') {
+    e.target.style.display = 'none';
+    document.getElementById('errorTelefono').style.display = 'none';
+  }
+});
+
   </script>
 </body>
 </html>
