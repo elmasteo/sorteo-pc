@@ -9,6 +9,8 @@
     h1 { text-align: center; margin-bottom: 30px; }
     .boleta-btn { margin: 10px; padding: 10px 20px; background: #ffd54f; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
     .boleta-btn:hover { background: #ffca28; }
+    .liberar-btn { background: #ef5350; color: white; margin-left: 10px; }
+    .liberar-btn:hover { background: #e53935; }
     .confirmados { margin-top: 40px; }
     .confirmado { background: #a5d6a7; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
   </style>
@@ -80,10 +82,13 @@
       if (pendientes.length > 0) {
         const pendientesDiv = document.createElement('div');
         pendientes.forEach(b => {
-          const btn = document.createElement('button');
-          btn.className = 'boleta-btn';
-          btn.textContent = `✅ Confirmar boleta ${b.numero}`;
-          btn.onclick = async () => {
+          const wrapper = document.createElement('div');
+          wrapper.style.marginBottom = '10px';
+
+          const btnConfirmar = document.createElement('button');
+          btnConfirmar.className = 'boleta-btn';
+          btnConfirmar.textContent = `✅ Confirmar boleta ${b.numero} - ${b.nombre} (${b.telefono})`;
+          btnConfirmar.onclick = async () => {
             await fetch('/.netlify/functions/confirmar', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -91,7 +96,22 @@
             });
             location.reload();
           };
-          pendientesDiv.appendChild(btn);
+
+          const btnLiberar = document.createElement('button');
+          btnLiberar.className = 'boleta-btn liberar-btn';
+          btnLiberar.textContent = `❌ Liberar`;
+          btnLiberar.onclick = async () => {
+            await fetch('/.netlify/functions/confirmar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ auth: clave, liberar: b.numero })
+            });
+            location.reload();
+          };
+
+          wrapper.appendChild(btnConfirmar);
+          wrapper.appendChild(btnLiberar);
+          pendientesDiv.appendChild(wrapper);
         });
         div.appendChild(pendientesDiv);
       } else {
