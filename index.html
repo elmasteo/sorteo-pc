@@ -23,19 +23,25 @@
       justify-content: center; align-items: center; z-index: 1000;
     }
     #reservaForm {
-      background: white; border-radius: 10px; padding: 20px; width: 300px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      background: white; border-radius: 15px; padding: 25px; width: 320px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column; align-items: center;
     }
-    #reservaForm h3 { margin-top: 0; }
+    #reservaForm h3 { margin-top: 0; margin-bottom: 15px; color: #1976d2; }
     #reservaForm input {
-      width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px;
+      width: 100%; padding: 12px 10px; margin: 10px 0;
+      border: 1px solid #ccc; border-radius: 8px; font-size: 15px;
     }
     #reservaForm button {
-      padding: 10px 20px; background: #1976d2; color: white;
-      border: none; border-radius: 5px; cursor: pointer;
+      padding: 12px 25px; background: #1976d2; color: white;
+      border: none; border-radius: 8px; cursor: pointer; font-size: 15px;
+      transition: background 0.3s;
     }
     #reservaForm button:hover {
       background: #1565c0;
+    }
+    #errorTelefono {
+      color: red; font-size: 14px; display: none;
     }
   </style>
 </head>
@@ -47,7 +53,8 @@
     <form id="reservaForm">
       <h3>Reservar boleta <span id="boletaNum"></span></h3>
       <input type="text" id="nombre" placeholder="Tu nombre" required>
-      <input type="tel" id="telefono" placeholder="Tu teléfono" required>
+      <input type="tel" id="telefono" placeholder="Tu teléfono" maxlength="10" required>
+      <div id="errorTelefono">Número inválido</div>
       <button type="submit">Reservar</button>
     </form>
   </div>
@@ -77,10 +84,21 @@
 
     document.getElementById('reservaForm').onsubmit = e => {
       e.preventDefault();
+      const telefono = document.getElementById('telefono').value.trim();
+      const nombre = document.getElementById('nombre').value.trim();
+      const error = document.getElementById('errorTelefono');
+
+      if (!/^\d{10}$/.test(telefono)) {
+        error.style.display = 'block';
+        return;
+      } else {
+        error.style.display = 'none';
+      }
+
       fetch('/.netlify/functions/reservar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ numero: seleccionada, nombre: nombre.value, telefono: telefono.value })
+        body: JSON.stringify({ numero: seleccionada, nombre, telefono })
       }).then(() => location.reload());
     };
 
@@ -88,6 +106,7 @@
     document.getElementById('modalOverlay').addEventListener('click', (e) => {
       if (e.target.id === 'modalOverlay') {
         e.target.style.display = 'none';
+        document.getElementById('errorTelefono').style.display = 'none';
       }
     });
   </script>
