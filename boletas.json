@@ -19,9 +19,9 @@
   },
   {
     "numero": 4,
-    "estado": "libre",
-    "nombre": "",
-    "telefono": ""
+    "estado": "pendiente",
+    "nombre": "test",
+    "telefono": "3157862008"
   },
   {
     "numero": 5,
