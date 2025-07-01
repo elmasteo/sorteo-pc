@@ -1,39 +1,39 @@
 [
   {
     "numero": 1,
-    "estado": "pagado",
-    "nombre": "Santiago",
-    "telefono": "3157862008"
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
   },
   {
     "numero": 2,
-    "estado": "pagado",
-    "nombre": "Adriana Rojas",
-    "telefono": "3219779439"
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
   },
   {
     "numero": 3,
-    "estado": "pendiente",
-    "nombre": "juan pérez",
-    "telefono": "3219779439"
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
   },
   {
     "numero": 4,
-    "estado": "pendiente",
-    "nombre": "test",
-    "telefono": "3157862008"
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
   },
   {
     "numero": 5,
-    "estado": "pendiente",
-    "nombre": "Santiago gomez",
-    "telefono": "3157862008"
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
   },
   {
     "numero": 6,
-    "estado": "pendiente",
-    "nombre": "Adriana Rojas Beltran",
-    "telefono": "3219779439"
+    "estado": "libre",
+    "nombre": "",
+    "telefono": ""
   },
   {
     "numero": 7,
