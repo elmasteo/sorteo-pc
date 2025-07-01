@@ -84,7 +84,12 @@
 
     document.getElementById('reservaForm').onsubmit = e => {
       e.preventDefault();
-      const telefono = document.getElementById('telefono').value.trim();
+      const telefonoInput = document.getElementById('telefono');
+      telefonoInput.addEventListener('input', () => {
+        // Reemplaza todo lo que no sea dígito con vacío
+        telefonoInput.value = telefonoInput.value.replace(/\D/g, '');
+      });
+
       const nombre = document.getElementById('nombre').value.trim();
       const error = document.getElementById('errorTelefono');
 
