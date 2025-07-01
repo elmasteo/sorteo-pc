@@ -1,28 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rifa PC</title>
   <style>
-    body { font-family: sans-serif; text-align: center; background: #f5f5f5; }
-    .boleta { display: inline-block; width: 50px; margin: 5px; padding: 10px; border-radius: 8px; cursor: pointer; }
-    .libre { background: #ccc; }
-    .pendiente { background: #fdd835; }
+    body { font-family: sans-serif; background: #f0f2f5; text-align: center; margin: 0; padding: 0; }
+    h1 { padding: 20px; background: #1976d2; color: white; margin: 0; }
+    #boletas { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
+    .boleta {
+      display: inline-block; width: 50px; margin: 5px; padding: 10px;
+      border-radius: 10px; cursor: pointer; font-weight: bold; color: white;
+    }
+    .libre { background: #9e9e9e; }
+    .pendiente { background: #fdd835; color: black; }
     .pagado { background: #66bb6a; cursor: not-allowed; }
-    form { margin-top: 20px; }
+
+    /* Modal */
+    #modalOverlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.6); display: none;
+      justify-content: center; align-items: center; z-index: 1000;
+    }
+    #reservaForm {
+      background: white; border-radius: 10px; padding: 20px; width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    #reservaForm h3 { margin-top: 0; }
+    #reservaForm input {
+      width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px;
+    }
+    #reservaForm button {
+      padding: 10px 20px; background: #1976d2; color: white;
+      border: none; border-radius: 5px; cursor: pointer;
+    }
+    #reservaForm button:hover {
+      background: #1565c0;
+    }
   </style>
 </head>
 <body>
   <h1>Rifa - Gana un PC</h1>
   <div id="boletas"></div>
 
-  <form id="reservaForm" style="display:none;">
-    <h3>Reservar boleta <span id="boletaNum"></span></h3>
-    <input type="text" id="nombre" placeholder="Tu nombre" required><br>
-    <input type="tel" id="telefono" placeholder="Tu teléfono" required><br>
-    <button type="submit">Reservar</button>
-  </form>
+  <div id="modalOverlay">
+    <form id="reservaForm">
+      <h3>Reservar boleta <span id="boletaNum"></span></h3>
+      <input type="text" id="nombre" placeholder="Tu nombre" required>
+      <input type="tel" id="telefono" placeholder="Tu teléfono" required>
+      <button type="submit">Reservar</button>
+    </form>
+  </div>
 
   <script>
     let seleccionada = null;
@@ -30,7 +58,7 @@
       .then(res => res.json())
       .then(boletas => {
         const contenedor = document.getElementById('boletas');
-        boletas.forEach((b, i) => {
+        boletas.forEach(b => {
           const div = document.createElement('div');
           div.className = `boleta ${b.estado}`;
           div.textContent = b.numero;
@@ -44,7 +72,7 @@
     function seleccionar(num) {
       seleccionada = num;
       document.getElementById('boletaNum').textContent = num;
-      document.getElementById('reservaForm').style.display = 'block';
+      document.getElementById('modalOverlay').style.display = 'flex';
     }
 
     document.getElementById('reservaForm').onsubmit = e => {
@@ -55,6 +83,13 @@
         body: JSON.stringify({ numero: seleccionada, nombre: nombre.value, telefono: telefono.value })
       }).then(() => location.reload());
     };
+
+    // Cerrar modal al hacer click fuera del formulario
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+      if (e.target.id === 'modalOverlay') {
+        e.target.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>

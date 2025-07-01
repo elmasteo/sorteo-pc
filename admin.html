@@ -2,34 +2,121 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Admin - Confirmar Boletas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rifa - Admin</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; background: #f0f2f5; padding: 20px; }
+    h1 { text-align: center; margin-bottom: 30px; }
+    .boleta-btn { margin: 10px; padding: 10px 20px; background: #ffd54f; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .boleta-btn:hover { background: #ffca28; }
+    .confirmados { margin-top: 40px; }
+    .confirmado { background: #a5d6a7; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+  </style>
 </head>
 <body>
+  <div id="contenido"></div>
+
   <script>
-    const clave = prompt("Clave de acceso:");
-    fetch('/.netlify/functions/confirmar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ auth: clave })
-    })
-    .then(r => r.json())
-    .then(data => {
-      if (!data || !Array.isArray(data.boletas)) return alert("Acceso denegado");
-      document.body.innerHTML = '<h1>Panel Admin</h1>';
-      data.boletas.filter(b => b.estado === 'pendiente').forEach(b => {
-        const btn = document.createElement('button');
-        btn.textContent = `Confirmar boleta ${b.numero}`;
+    async function init() {
+      const clave = await new Promise(resolve => {
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = 0;
+        overlay.style.left = 0;
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.background = "rgba(0,0,0,0.8)";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.justifyContent = "center";
+        overlay.style.alignItems = "center";
+        overlay.style.zIndex = 9999;
+
+        const input = document.createElement("input");
+        input.type = "password";
+        input.placeholder = "🔒 Ingresa tu clave";
+        input.style.padding = "10px";
+        input.style.fontSize = "16px";
+        input.style.borderRadius = "5px";
+        input.style.border = "1px solid #ccc";
+        input.style.marginBottom = "10px";
+
+        const btn = document.createElement("button");
+        btn.textContent = "Acceder";
+        btn.style.padding = "10px 20px";
+        btn.style.fontSize = "16px";
+        btn.style.border = "none";
+        btn.style.borderRadius = "5px";
+        btn.style.cursor = "pointer";
+
         btn.onclick = () => {
-          fetch('/.netlify/functions/confirmar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ auth: clave, confirmar: b.numero })
-          }).then(() => location.reload());
+          const val = input.value;
+          document.body.removeChild(overlay);
+          resolve(val);
         };
-        document.body.appendChild(btn);
-        document.body.appendChild(document.createElement('br'));
+
+        overlay.appendChild(input);
+        overlay.appendChild(btn);
+        document.body.appendChild(overlay);
       });
-    });
+
+      const res = await fetch('/.netlify/functions/confirmar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ auth: clave })
+      });
+      const data = await res.json();
+
+      if (!data || !Array.isArray(data.boletas)) {
+        document.body.innerHTML = '<h2 style="color:red;text-align:center">Acceso denegado</h2>';
+        return;
+      }
+
+      const div = document.getElementById('contenido');
+      div.innerHTML = '<h1>Panel Admin</h1>';
+
+      // PENDIENTES DE PAGO
+      const pendientes = data.boletas.filter(b => b.estado === 'pendiente');
+      if (pendientes.length > 0) {
+        const pendientesDiv = document.createElement('div');
+        pendientes.forEach(b => {
+          const btn = document.createElement('button');
+          btn.className = 'boleta-btn';
+          btn.textContent = `✅ Confirmar boleta ${b.numero}`;
+          btn.onclick = async () => {
+            await fetch('/.netlify/functions/confirmar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ auth: clave, confirmar: b.numero })
+            });
+            location.reload();
+          };
+          pendientesDiv.appendChild(btn);
+        });
+        div.appendChild(pendientesDiv);
+      } else {
+        const msg = document.createElement('p');
+        msg.textContent = 'No hay boletas pendientes.';
+        div.appendChild(msg);
+      }
+
+      // CONFIRMADOS
+      const confirmados = data.boletas.filter(b => b.estado === 'pagado');
+      if (confirmados.length > 0) {
+        const lista = document.createElement('div');
+        lista.className = 'confirmados';
+        lista.innerHTML = '<h2>🎉 Participantes Confirmados</h2>';
+        confirmados.forEach(b => {
+          const p = document.createElement('div');
+          p.className = 'confirmado';
+          p.innerHTML = `<strong>#${b.numero}</strong>: ${b.nombre} - ${b.telefono}`;
+          lista.appendChild(p);
+        });
+        div.appendChild(lista);
+      }
+    }
+
+    init();
   </script>
 </body>
 </html>
