@@ -73,6 +73,19 @@
       color: #444;
       display: none;
     }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 4px solid #ccc;
+      border-top-color: #333;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
   </style>
 </head>
 <body>
@@ -117,7 +130,13 @@
       <input type="tel" id="telefono" placeholder="Tu teléfono" maxlength="10" required>
       <div id="errorTelefono">Número de teléfono inválido</div>
       <button type="submit">Reservar</button>
-      <div id="loader">Estamos reservando tu boleta... NO actualices la página - Recuerda que para confirmar tu boleta debes realizar tu pago al - 3157862008</div>
+      <div id="loader" style="display: none; flex-direction: column; align-items: center; gap: 12px;">
+      <div class="spinner"></div>
+      <p style="color:#444; font-size:14px; max-width:260px;">
+        Estamos reservando tu boleta... NO actualices la página.<br>Recuerda confirmar tu pago al 3157862008.
+      </p>
+    </div>
+
     </form>
   </div>
 
@@ -166,9 +185,9 @@
         error.style.display = 'none';
       }
 
-      // Desactiva el botón y muestra loader
-      boton.disabled = true;
-      loader.style.display = 'block';
+      boton.style.display = 'none';
+      loader.style.display = 'flex';
+
 
       try {
         const res = await fetch('/.netlify/functions/reservar', {
@@ -182,8 +201,9 @@
         if (res.ok) {
           setTimeout(() => location.reload(), 20000);
         } else {
-          boton.disabled = false;
+          boton.style.display = 'inline-block';
           loader.style.display = 'none';
+
 
           if (res.status === 409) {
             alert("Parece que alguien está reservando esta boleta.");
@@ -192,8 +212,9 @@
           }
         }
       } catch (err) {
-        boton.disabled = false;
+        boton.style.display = 'inline-block';
         loader.style.display = 'none';
+
         alert("Error de conexión. Intenta de nuevo.");
       }
     };
