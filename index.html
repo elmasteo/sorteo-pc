@@ -86,9 +86,7 @@
       to { transform: rotate(360deg); }
     }
     #verPremioBtn {
-      position: fixed;
-      top: 12px;
-      right: 12px;
+      display: inline-block;
       background: #1976d2;
       color: white;
       padding: 10px 16px;
@@ -97,11 +95,21 @@
       cursor: pointer;
       font-size: 14px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      z-index: 999;
       transition: background 0.3s;
+      margin: 15px 0;
     }
     #verPremioBtn:hover {
       background: #1565c0;
+    }
+    #verPremioContainer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 20px;
+    }
+    @media (max-width: 600px) {
+      #verPremioContainer {
+        justify-content: center;
+      }
     }
 
     #imgOverlay {
@@ -128,6 +136,11 @@
   Gran Rifa - Gana un PC - Juega el 6 de Septiembre 2025 - Últimas cifras de la lotería de Boyacá<br>
   <span id="contador">Cargando...</span>
 </h1>
+ <button id="verPremioBtn">🎁 Ver premio</button>
+    <div id="imgOverlay">
+      <img src="assets/premio.jpg" alt="Premio de la rifa">
+    </div>
+
 <div style="background: #fff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
   <p style="font-size: 16px; margin-bottom: 10px;">
     Después de reservar realiza tu pago a nombre de <strong>Santiago Gómez</strong> al número <strong>3157862008</strong> usando cualquiera de los siguientes medios:
@@ -174,11 +187,7 @@
     </form>
   </div>
 
-    <button id="verPremioBtn">🎁 Ver premio</button>
-    <div id="imgOverlay">
-      <img src="assets/premio.jpg" alt="Premio de la rifa">
-    </div>
-
+   
   <script>
     let seleccionada = null;
 
@@ -201,6 +210,8 @@
       seleccionada = num;
       document.getElementById('boletaNum').textContent = num.toString().padStart(2, '0');
       document.getElementById('modalOverlay').style.display = 'flex';
+      document.getElementById('verPremioContainer').style.display = 'none';
+
     }
 
     const telefonoInput = document.getElementById('telefono');
@@ -264,6 +275,8 @@
       if (e.target.id === 'modalOverlay') {
         e.target.style.display = 'none';
         document.getElementById('errorTelefono').style.display = 'none';
+        document.getElementById('verPremioContainer').style.display = 'flex';
+
       }
     });
 
