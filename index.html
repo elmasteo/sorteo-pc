@@ -76,10 +76,13 @@
   </style>
 </head>
 <body>
-  <h1>Rifa - Gana un PC</h1>
+  <h1>
+  Gran Rifa - Gana un PC - Juega el 6 de Septiembre 2025<br>
+  <span id="contador">Cargando...</span>
+</h1>
 <div style="background: #fff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
   <p style="font-size: 16px; margin-bottom: 10px;">
-    Realiza tu pago a nombre de <strong>Santiago Gómez</strong> al número <strong>3157862008</strong> usando cualquiera de los siguientes medios:
+    Después de reservar realiza tu pago a nombre de <strong>Santiago Gómez</strong> al número <strong>3157862008</strong> usando cualquiera de los siguientes medios:
   </p>
   <div style="display: flex; justify-content: center; gap: 30px; align-items: center; flex-wrap: wrap;">
     <div style="display: flex; align-items: center; gap: 8px;">
@@ -188,6 +191,28 @@
         document.getElementById('errorTelefono').style.display = 'none';
       }
     });
+
+    function actualizarContador() {
+    const destino = new Date("2025-09-06T22:40:00-05:00"); // Bogotá time UTC-5
+    const ahora = new Date();
+    const diferencia = destino - ahora;
+
+    if (diferencia <= 0) {
+      document.getElementById("contador").textContent = "¡La rifa ya se realizó!";
+      return;
+    }
+
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+    const segundos = Math.floor((diferencia / 1000) % 60);
+
+    document.getElementById("contador").textContent =
+      `Faltan ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos`;
+  }
+
+  setInterval(actualizarContador, 1000);
+  actualizarContador();
   </script>
 </body>
 </html>
