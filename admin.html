@@ -102,10 +102,18 @@
       width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.8);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
+    }
+
+    .overlay-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
     }
 
     .overlay input, .overlay button {
@@ -133,7 +141,13 @@
   </style>
 </head>
 <body>
-  <div id="contenido"></div>
+  <div id="contenido">
+    <h1>Panel Administrativo</h1>
+    <div class="filter-container">
+      <input type="text" id="buscador" placeholder="🔍 Filtrar por nombre o teléfono...">
+    </div>
+    <div id="divPendientes"></div>
+  </div>
 
   <script>
     let clave = '';
@@ -148,17 +162,6 @@
         return;
       }
 
-      const div = document.getElementById('contenido');
-      div.innerHTML = '<h1>Panel Administrativo</h1>';
-
-      // Filtro
-      const filtroDiv = document.createElement('div');
-      filtroDiv.className = 'filter-container';
-      filtroDiv.innerHTML = `<input type="text" id="buscador" placeholder="🔍 Filtrar por nombre o teléfono...">`;
-      div.appendChild(filtroDiv);
-
-      document.getElementById('buscador').addEventListener('input', filtrar);
-
       pendientes = data.boletas.filter(b => b.estado === 'pendiente');
       renderPendientes();
 
@@ -172,15 +175,16 @@
           item.innerHTML = `<strong>#${b.numero}</strong>: ${b.nombre} - ${b.telefono}`;
           confirmadosDiv.appendChild(item);
         });
-        div.appendChild(confirmadosDiv);
+        document.getElementById('contenido').appendChild(confirmadosDiv);
       }
+
+      document.getElementById('buscador').addEventListener('input', filtrar);
     }
 
     function renderPendientes(filtro = '') {
-      const oldGrid = document.querySelector('.grid');
-      if (oldGrid) oldGrid.remove();
+      const div = document.getElementById('divPendientes');
+      div.innerHTML = ''; // limpiar
 
-      const div = document.getElementById('contenido');
       const grid = document.createElement('div');
       grid.className = 'grid';
 
@@ -236,7 +240,7 @@
         grid.appendChild(card);
       });
 
-      div.insertBefore(grid, document.querySelector('h2') || null);
+      div.appendChild(grid);
     }
 
     function filtrar() {
@@ -248,6 +252,9 @@
       return new Promise(resolve => {
         const overlay = document.createElement("div");
         overlay.className = "overlay";
+
+        const inner = document.createElement("div");
+        inner.className = "overlay-inner";
 
         const input = document.createElement("input");
         input.type = "password";
@@ -261,8 +268,9 @@
           resolve(val);
         };
 
-        overlay.appendChild(input);
-        overlay.appendChild(btn);
+        inner.appendChild(input);
+        inner.appendChild(btn);
+        overlay.appendChild(inner);
         document.body.appendChild(overlay);
       });
     }
