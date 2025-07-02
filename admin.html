@@ -138,6 +138,37 @@
     .overlay button:hover {
       background: #000;
     }
+    .stats {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-box {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stat-pagadas {
+      background: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .stat-pendientes {
+      background: #fff9c4;
+      color: #f57f17;
+    }
+
+    .stat-disponibles {
+      background: #eceff1;
+      color: #37474f;
+    }
+
   </style>
 </head>
 <body>
@@ -179,6 +210,21 @@
       }
 
       document.getElementById('buscador').addEventListener('input', filtrar);
+
+    const total = data.boletas.length;
+    const pagadas = data.boletas.filter(b => b.estado === 'pagado').length;
+    const reservadas = data.boletas.filter(b => b.estado === 'pendiente').length;
+    const disponibles = total - pagadas - reservadas;
+
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'stats';
+    statsDiv.innerHTML = `
+      <div class="stat-box stat-pagadas">✅ Pagadas: ${pagadas}</div>
+      <div class="stat-box stat-pendientes">🕒 Reservadas: ${reservadas}</div>
+      <div class="stat-box stat-disponibles">📦 Disponibles: ${disponibles}</div>
+    `;
+    document.getElementById('contenido').insertBefore(statsDiv, document.querySelector('.filter-container'));
+
     }
 
     function renderPendientes(filtro = '') {
