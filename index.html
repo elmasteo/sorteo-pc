@@ -85,6 +85,41 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    #verPremioBtn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: #1976d2;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 999;
+      transition: background 0.3s;
+    }
+    #verPremioBtn:hover {
+      background: #1565c0;
+    }
+
+    #imgOverlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #imgOverlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
 
   </style>
 </head>
@@ -248,6 +283,22 @@
 
   setInterval(actualizarContador, 1000);
   actualizarContador();
+
+  document.getElementById('verPremioBtn').onclick = () => {
+  document.getElementById('imgOverlay').style.display = 'flex';
+    };
+
+    document.getElementById('imgOverlay').onclick = (e) => {
+      if (e.target.id === 'imgOverlay') {
+        e.target.style.display = 'none';
+      }
+    };
+
   </script>
+  <button id="verPremioBtn">🎁 Ver premio</button>
+<div id="imgOverlay">
+  <img src="assets/premio.jpg" alt="Premio de la rifa">
+</div>
+
 </body>
 </html>
