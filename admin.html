@@ -1,56 +1,260 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rifa - Admin</title>
   <style>
-    body { font-family: sans-serif; margin: 0; background: #f0f2f5; padding: 20px; }
-    h1 { text-align: center; margin-bottom: 30px; }
-    .boleta-btn { margin: 10px; padding: 10px 20px; background: #ffd54f; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-    .boleta-btn:hover { background: #ffca28; }
-    .liberar-btn { background: #ef5350; color: white; margin-left: 10px; }
-    .liberar-btn:hover { background: #e53935; }
-    .confirmados { margin-top: 40px; }
-    .confirmado { background: #a5d6a7; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f0f2f5;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .filter-container input {
+      padding: 12px;
+      width: 280px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card strong {
+      font-size: 18px;
+      color: #444;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .confirmar-btn {
+      background: #4caf50;
+      color: white;
+    }
+
+    .confirmar-btn:hover {
+      background: #43a047;
+    }
+
+    .liberar-btn {
+      background: #f44336;
+      color: white;
+    }
+
+    .liberar-btn:hover {
+      background: #e53935;
+    }
+
+    .confirmado {
+      background: #e8f5e9;
+      border-left: 5px solid #4caf50;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .overlay input, .overlay button {
+      padding: 12px;
+      font-size: 16px;
+      margin: 6px;
+      border-radius: 6px;
+    }
+
+    .overlay input {
+      width: 240px;
+      border: 1px solid #ccc;
+    }
+
+    .overlay button {
+      background: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .overlay button:hover {
+      background: #000;
+    }
   </style>
 </head>
 <body>
   <div id="contenido"></div>
 
   <script>
+    let clave = '';
+    let pendientes = [];
+
     async function init() {
-      const clave = await new Promise(resolve => {
+      clave = await solicitarClave();
+      const data = await obtenerBoletas(clave);
+
+      if (!data || !Array.isArray(data.boletas)) {
+        document.body.innerHTML = '<h2 style="color:red;text-align:center">Acceso denegado</h2>';
+        return;
+      }
+
+      const div = document.getElementById('contenido');
+      div.innerHTML = '<h1>Panel Administrativo</h1>';
+
+      // Filtro
+      const filtroDiv = document.createElement('div');
+      filtroDiv.className = 'filter-container';
+      filtroDiv.innerHTML = `<input type="text" id="buscador" placeholder="🔍 Filtrar por nombre o teléfono...">`;
+      div.appendChild(filtroDiv);
+
+      document.getElementById('buscador').addEventListener('input', filtrar);
+
+      pendientes = data.boletas.filter(b => b.estado === 'pendiente');
+      renderPendientes();
+
+      const confirmados = data.boletas.filter(b => b.estado === 'pagado');
+      if (confirmados.length > 0) {
+        const confirmadosDiv = document.createElement('div');
+        confirmadosDiv.innerHTML = '<h2>🎉 Participantes Confirmados</h2>';
+        confirmados.forEach(b => {
+          const item = document.createElement('div');
+          item.className = 'confirmado';
+          item.innerHTML = `<strong>#${b.numero}</strong>: ${b.nombre} - ${b.telefono}`;
+          confirmadosDiv.appendChild(item);
+        });
+        div.appendChild(confirmadosDiv);
+      }
+    }
+
+    function renderPendientes(filtro = '') {
+      const oldGrid = document.querySelector('.grid');
+      if (oldGrid) oldGrid.remove();
+
+      const div = document.getElementById('contenido');
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+
+      const filtroMin = filtro.trim().toLowerCase();
+      const filtradas = pendientes.filter(b =>
+        b.nombre.toLowerCase().includes(filtroMin) ||
+        b.telefono.includes(filtroMin)
+      );
+
+      filtradas.forEach(b => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <strong>Boleta #${b.numero}</strong>
+          <div>${b.nombre}</div>
+          <div>${b.telefono}</div>
+        `;
+
+        const acciones = document.createElement('div');
+        acciones.className = 'actions';
+
+        const btnConfirmar = document.createElement('button');
+        btnConfirmar.className = 'confirmar-btn';
+        btnConfirmar.textContent = '✅ Confirmar';
+        btnConfirmar.onclick = async () => {
+          btnConfirmar.disabled = true;
+          btnConfirmar.textContent = '✔️ Confirmado';
+          await fetch('/.netlify/functions/confirmar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ auth: clave, confirmar: b.numero })
+          });
+          card.remove();
+        };
+
+        const btnLiberar = document.createElement('button');
+        btnLiberar.className = 'liberar-btn';
+        btnLiberar.textContent = '❌ Liberar';
+        btnLiberar.onclick = async () => {
+          btnLiberar.disabled = true;
+          btnLiberar.textContent = 'Liberado';
+          await fetch('/.netlify/functions/confirmar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ auth: clave, liberar: b.numero })
+          });
+          card.remove();
+        };
+
+        acciones.appendChild(btnConfirmar);
+        acciones.appendChild(btnLiberar);
+        card.appendChild(acciones);
+        grid.appendChild(card);
+      });
+
+      div.insertBefore(grid, document.querySelector('h2') || null);
+    }
+
+    function filtrar() {
+      const texto = document.getElementById('buscador').value;
+      renderPendientes(texto);
+    }
+
+    function solicitarClave() {
+      return new Promise(resolve => {
         const overlay = document.createElement("div");
-        overlay.style.position = "fixed";
-        overlay.style.top = 0;
-        overlay.style.left = 0;
-        overlay.style.width = "100vw";
-        overlay.style.height = "100vh";
-        overlay.style.background = "rgba(0,0,0,0.8)";
-        overlay.style.display = "flex";
-        overlay.style.flexDirection = "column";
-        overlay.style.justifyContent = "center";
-        overlay.style.alignItems = "center";
-        overlay.style.zIndex = 9999;
+        overlay.className = "overlay";
 
         const input = document.createElement("input");
         input.type = "password";
         input.placeholder = "🔒 Ingresa tu clave";
-        input.style.padding = "10px";
-        input.style.fontSize = "16px";
-        input.style.borderRadius = "5px";
-        input.style.border = "1px solid #ccc";
-        input.style.marginBottom = "10px";
 
         const btn = document.createElement("button");
         btn.textContent = "Acceder";
-        btn.style.padding = "10px 20px";
-        btn.style.fontSize = "16px";
-        btn.style.border = "none";
-        btn.style.borderRadius = "5px";
-        btn.style.cursor = "pointer";
-
         btn.onclick = () => {
           const val = input.value;
           document.body.removeChild(overlay);
@@ -61,79 +265,15 @@
         overlay.appendChild(btn);
         document.body.appendChild(overlay);
       });
+    }
 
+    async function obtenerBoletas(auth) {
       const res = await fetch('/.netlify/functions/confirmar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ auth: clave })
+        body: JSON.stringify({ auth })
       });
-      const data = await res.json();
-
-      if (!data || !Array.isArray(data.boletas)) {
-        document.body.innerHTML = '<h2 style="color:red;text-align:center">Acceso denegado</h2>';
-        return;
-      }
-
-      const div = document.getElementById('contenido');
-      div.innerHTML = '<h1>Panel Admin</h1>';
-
-      // PENDIENTES DE PAGO
-      const pendientes = data.boletas.filter(b => b.estado === 'pendiente');
-      if (pendientes.length > 0) {
-        const pendientesDiv = document.createElement('div');
-        pendientes.forEach(b => {
-          const wrapper = document.createElement('div');
-          wrapper.style.marginBottom = '10px';
-
-          const btnConfirmar = document.createElement('button');
-          btnConfirmar.className = 'boleta-btn';
-          btnConfirmar.textContent = `✅ Confirmar boleta ${b.numero} - ${b.nombre} (${b.telefono})`;
-          btnConfirmar.onclick = async () => {
-            await fetch('/.netlify/functions/confirmar', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ auth: clave, confirmar: b.numero })
-            });
-            location.reload();
-          };
-
-          const btnLiberar = document.createElement('button');
-          btnLiberar.className = 'boleta-btn liberar-btn';
-          btnLiberar.textContent = `❌ Liberar`;
-          btnLiberar.onclick = async () => {
-            await fetch('/.netlify/functions/confirmar', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ auth: clave, liberar: b.numero })
-            });
-            location.reload();
-          };
-
-          wrapper.appendChild(btnConfirmar);
-          wrapper.appendChild(btnLiberar);
-          pendientesDiv.appendChild(wrapper);
-        });
-        div.appendChild(pendientesDiv);
-      } else {
-        const msg = document.createElement('p');
-        msg.textContent = 'No hay boletas pendientes.';
-        div.appendChild(msg);
-      }
-
-      // CONFIRMADOS
-      const confirmados = data.boletas.filter(b => b.estado === 'pagado');
-      if (confirmados.length > 0) {
-        const lista = document.createElement('div');
-        lista.className = 'confirmados';
-        lista.innerHTML = '<h2>🎉 Participantes Confirmados</h2>';
-        confirmados.forEach(b => {
-          const p = document.createElement('div');
-          p.className = 'confirmado';
-          p.innerHTML = `<strong>#${b.numero}</strong>: ${b.nombre} - ${b.telefono}`;
-          lista.appendChild(p);
-        });
-        div.appendChild(lista);
-      }
+      return await res.json();
     }
 
     init();
