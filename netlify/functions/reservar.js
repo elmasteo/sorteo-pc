@@ -1,50 +1,69 @@
 const fetch = require('node-fetch');
 
 const GH_TOKEN = process.env.GH_TOKEN;
-const REPO = 'elmasteo/sorteo-pc'; 
+const REPO = 'elmasteo/sorteo-pc';
 const FILE_PATH = 'boletas.json';
 const BRANCH = 'master';
 
 exports.handler = async (event) => {
-  const { numero, nombre, telefono } = JSON.parse(event.body);
+  try {
+    const { numero, nombre, telefono } = JSON.parse(event.body);
 
-  const headers = {
-    'Authorization': `token ${GH_TOKEN}`,
-    'Accept': 'application/vnd.github.v3+json'
-  };
+    const headers = {
+      'Authorization': `token ${GH_TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json'
+    };
 
-  // Obtener contenido actual de boletas.json
-  const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, { headers });
-  const file = await getRes.json();
-  const content = Buffer.from(file.content, 'base64').toString();
-  const boletas = JSON.parse(content);
+    // Obtener contenido actual de boletas.json
+    const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, { headers });
+    if (!getRes.ok) {
+      return { statusCode: 500, body: 'Error al obtener boletas' };
+    }
 
-  // Verifica si está disponible
-  const boleta = boletas.find(b => b.numero === numero);
-  if (!boleta || boleta.estado !== 'libre') {
-    return { statusCode: 400, body: 'Boleta no disponible' };
+    const file = await getRes.json();
+    const content = Buffer.from(file.content, 'base64').toString();
+    const boletas = JSON.parse(content);
+
+    // Verifica si la boleta existe y sigue libre
+    const boleta = boletas.find(b => b.numero == numero);
+    if (!boleta) {
+      return { statusCode: 404, body: 'Boleta no encontrada' };
+    }
+    if (boleta.estado !== 'libre') {
+      return { statusCode: 409, body: 'Boleta ya reservada por otra persona' };
+    }
+
+    // Actualizar el estado de la boleta
+    boleta.estado = 'pendiente';
+    boleta.nombre = nombre;
+    boleta.telefono = telefono;
+
+    // Subir los cambios
+    const newContent = Buffer.from(JSON.stringify(boletas, null, 2)).toString('base64');
+    const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `Reserva boleta ${numero}`,
+        content: newContent,
+        sha: file.sha,
+        branch: BRANCH
+      })
+    });
+
+    if (!putRes.ok) {
+      const error = await putRes.json();
+      if (putRes.status === 409 || error?.message?.includes('sha')) {
+        return {
+          statusCode: 409,
+          body: 'Conflicto al guardar: la boleta pudo haber sido modificada por otro usuario. Intenta de nuevo.'
+        };
+      }
+      return { statusCode: 500, body: 'Error al guardar boleta' };
+    }
+
+    return { statusCode: 200, body: 'Reservado correctamente' };
+  } catch (err) {
+    return { statusCode: 500, body: 'Error interno: ' + err.message };
   }
-
-  boleta.estado = 'pendiente';
-  boleta.nombre = nombre;
-  boleta.telefono = telefono;
-
-  // Actualizar boletas.json con commit
-  const newContent = Buffer.from(JSON.stringify(boletas, null, 2)).toString('base64');
-  const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-    method: 'PUT',
-    headers,
-    body: JSON.stringify({
-      message: `Reserva boleta ${numero}`,
-      content: newContent,
-      sha: file.sha,
-      branch: BRANCH
-    })
-  });
-
-  if (!updateRes.ok) {
-    return { statusCode: 500, body: 'Error al guardar' };
-  }
-
-  return { statusCode: 200, body: 'Reservado' };
 };
