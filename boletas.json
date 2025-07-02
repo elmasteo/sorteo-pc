@@ -1,7 +1,9 @@
 [
   {
     "numero": "00",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Adriana Rojas Beltran",
+    "telefono": "3219779439"
   },
   {
     "numero": "01",
