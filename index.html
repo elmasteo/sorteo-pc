@@ -100,6 +100,13 @@
   </div>
 </div>
 
+<div style="padding: 10px; font-size: 14px;">
+  <strong>Convención de colores:</strong><br>
+  <span style="background:#9e9e9e; color:white; padding:4px 10px; border-radius:5px; margin: 4px;">Disponible</span>
+  <span style="background:#fdd835; color:black; padding:4px 10px; border-radius:5px; margin: 4px;">Pendiente</span>
+  <span style="background:#66bb6a; color:white; padding:4px 10px; border-radius:5px; margin: 4px;">Pagada</span>
+</div>
+
 
   <div id="boletas"></div>
 
@@ -150,6 +157,7 @@
       const nombre = document.getElementById('nombre').value.trim();
       const error = document.getElementById('errorTelefono');
       const loader = document.getElementById('loader');
+      const boton = document.querySelector('#reservaForm button');
 
       if (!/^\d{10}$/.test(telefono)) {
         error.style.display = 'block';
@@ -158,6 +166,8 @@
         error.style.display = 'none';
       }
 
+      // Desactiva el botón y muestra loader
+      boton.disabled = true;
       loader.style.display = 'block';
 
       try {
@@ -171,18 +181,23 @@
 
         if (res.ok) {
           setTimeout(() => location.reload(), 20000);
-        } else if (res.status === 409) {
-          loader.style.display = 'none';
-          alert("Parece que alguien está reservando esta boleta.");
         } else {
+          boton.disabled = false;
           loader.style.display = 'none';
-          alert("Hubo un error al intentar reservar. Intenta nuevamente.");
+
+          if (res.status === 409) {
+            alert("Parece que alguien está reservando esta boleta.");
+          } else {
+            alert("Hubo un error al intentar reservar. Intenta nuevamente.");
+          }
         }
       } catch (err) {
+        boton.disabled = false;
         loader.style.display = 'none';
         alert("Error de conexión. Intenta de nuevo.");
       }
     };
+
 
 
     document.getElementById('modalOverlay').addEventListener('click', (e) => {
