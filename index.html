@@ -119,7 +119,7 @@
       telefonoInput.value = telefonoInput.value.replace(/\D/g, '');
     });
 
-    document.getElementById('reservaForm').onsubmit = e => {
+    document.getElementById('reservaForm').onsubmit = async e => {
       e.preventDefault();
 
       const telefono = telefonoInput.value.trim();
@@ -136,14 +136,30 @@
 
       loader.style.display = 'block';
 
-      fetch('/.netlify/functions/reservar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ numero: seleccionada, nombre, telefono })
-      }).then(() => {
-        setTimeout(() => location.reload(), 20000);
-      });
+      try {
+        const res = await fetch('/.netlify/functions/reservar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ numero: seleccionada, nombre, telefono })
+        });
+
+        const text = await res.text();
+
+        if (res.ok) {
+          setTimeout(() => location.reload(), 20000);
+        } else if (res.status === 409) {
+          loader.style.display = 'none';
+          alert("Parece que alguien está reservando esta boleta.");
+        } else {
+          loader.style.display = 'none';
+          alert("Hubo un error al intentar reservar. Intenta nuevamente.");
+        }
+      } catch (err) {
+        loader.style.display = 'none';
+        alert("Error de conexión. Intenta de nuevo.");
+      }
     };
+
 
     document.getElementById('modalOverlay').addEventListener('click', (e) => {
       if (e.target.id === 'modalOverlay') {
