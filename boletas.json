@@ -5,9 +5,7 @@
   },
   {
     "numero": "01",
-    "estado": "pendiente",
-    "nombre": "A",
-    "telefono": "3219779439"
+    "estado": "libre"
   },
   {
     "numero": "02",
