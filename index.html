@@ -138,8 +138,8 @@
 </h1>
  <button id="verPremioBtn">🎁 Ver premio</button>
     <div id="imgOverlay">
-      <img src="assets/premio.jpg" alt="Premio de la rifa">
-    </div>
+    <img id="imgOverlayContent" src="assets/premio.jpg" alt="Contenido">
+  </div>
 
 <div style="background: #fff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
   <p style="font-size: 16px; margin-bottom: 10px;">
@@ -147,11 +147,16 @@
   </p>
   <div style="display: flex; justify-content: center; gap: 30px; align-items: center; flex-wrap: wrap;">
     <div style="display: flex; align-items: center; gap: 8px;">
-      <img src="assets/nequi.jpeg" alt="Nequi" style="height: 32px; object-fit: contain;">
+      <button class="qr-btn" data-img="assets/qr-nequi.jpg" style="all: unset; cursor: pointer;">
+        <img src="assets/nequi.jpeg" alt="Nequi" style="height: 32px; object-fit: contain;">
+      </button>
+
       
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
-      <img src="assets/daviplata.svg" alt="Daviplata" style="height: 32px; object-fit: contain;">
+      <button class="qr-btn" data-img="assets/qr-daviplata.jpg" style="all: unset; cursor: pointer;">
+        <img src="assets/daviplata.svg" alt="Daviplata" style="height: 32px; object-fit: contain;">
+      </button>
       
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
@@ -311,6 +316,16 @@
         e.target.style.display = 'none';
       }
     };
+
+    document.querySelectorAll('.qr-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const src = btn.dataset.img;
+    const img = document.getElementById('imgOverlayContent');
+    img.src = src;
+    document.getElementById('imgOverlay').style.display = 'flex';
+  });
+});
+
 
   </script>
 
