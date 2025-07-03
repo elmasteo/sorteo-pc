@@ -351,8 +351,12 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ auth })
       });
+
+      if (!res.ok) return null; // Clave incorrecta u otro error
+
       return await res.json();
     }
+
 
     init();
   </script>
