@@ -393,5 +393,12 @@ document.querySelectorAll('#filtros button').forEach(btn => {
 
   </script>
 
+  <footer style="background:#333; color:#ccc; font-size:14px; padding:12px; text-align:center;">
+  &copy; <span id="anio"></span> Made by Santiago Gómez
+</footer>
+<script>
+  document.getElementById('anio').textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
