@@ -180,9 +180,18 @@
     <div id="divPendientes"></div>
   </div>
 
+  <hr style="margin: 40px 0; border: none; border-top: 1px solid #ccc;">
+
+<div class="filter-container">
+  <input type="text" id="buscadorConfirmados" placeholder="🔍 Filtrar confirmados por nombre o teléfono...">
+</div>
+<div id="divConfirmados"></div>
+
+
   <script>
     let clave = '';
     let pendientes = [];
+    let confirmados = [];
 
     async function init() {
       clave = await solicitarClave();
@@ -196,18 +205,8 @@
       pendientes = data.boletas.filter(b => b.estado === 'pendiente');
       renderPendientes();
 
-      const confirmados = data.boletas.filter(b => b.estado === 'pagado');
-      if (confirmados.length > 0) {
-        const confirmadosDiv = document.createElement('div');
-        confirmadosDiv.innerHTML = '<h2>🎉 Participantes Confirmados</h2>';
-        confirmados.forEach(b => {
-          const item = document.createElement('div');
-          item.className = 'confirmado';
-          item.innerHTML = `<strong>#${b.numero}</strong>: ${b.nombre} - ${b.telefono}`;
-          confirmadosDiv.appendChild(item);
-        });
-        document.getElementById('contenido').appendChild(confirmadosDiv);
-      }
+      confirmados = data.boletas.filter(b => b.estado === 'pagado');
+      renderConfirmados();
 
       document.getElementById('buscador').addEventListener('input', filtrar);
 
@@ -225,7 +224,32 @@
     `;
     document.getElementById('contenido').insertBefore(statsDiv, document.querySelector('.filter-container'));
 
+    document.getElementById('buscadorConfirmados').addEventListener('input', () => {
+      const texto = document.getElementById('buscadorConfirmados').value;
+      renderConfirmados(texto);
+    });
+
+
     }
+
+    function renderConfirmados(filtro = '') {
+      const div = document.getElementById('divConfirmados');
+      div.innerHTML = '<h2>🎉 Participantes Confirmados</h2>';
+
+      const filtroMin = filtro.trim().toLowerCase();
+      const filtrados = confirmados.filter(b =>
+        b.nombre.toLowerCase().includes(filtroMin) ||
+        b.telefono.includes(filtroMin)
+      );
+
+      filtrados.forEach(b => {
+        const item = document.createElement('div');
+        item.className = 'confirmado';
+        item.innerHTML = `<strong>#${b.numero}</strong>: ${b.nombre} - ${b.telefono}`;
+        div.appendChild(item);
+      });
+    }
+
 
     function renderPendientes(filtro = '') {
       const div = document.getElementById('divPendientes');
