@@ -5,9 +5,7 @@
   },
   {
     "numero": "01",
-    "estado": "pendiente",
-    "nombre": "Test test",
-    "telefono": "3157862008"
+    "estado": "libre"
   },
   {
     "numero": "02",
