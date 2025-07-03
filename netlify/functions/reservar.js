@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const nodemailer = require('nodemailer');
 
 const GH_TOKEN = process.env.GH_TOKEN;
 const REPO = 'elmasteo/sorteo-pc';
@@ -61,6 +62,27 @@ exports.handler = async (event) => {
       }
       return { statusCode: 500, body: 'Error al guardar boleta' };
     }
+
+        const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: `"Sorteo PC" <${process.env.MAIL_USER}>`,
+      to: "sago980302@hotmail.com", // te lo mandas a ti mismo
+      subject: `Nueva reserva de boleta #${numero}`,
+      html: `
+        <h2>🎟️ Nueva Reserva</h2>
+        <p><strong>Boleta:</strong> #${numero}</p>
+        <p><strong>Nombre:</strong> ${nombre}</p>
+        <p><strong>Teléfono:</strong> ${telefono}</p>
+        <p><small>Este mensaje fue generado automáticamente.</small></p>
+      `
+    });
 
     return { statusCode: 200, body: 'Reservado correctamente' };
   } catch (err) {
