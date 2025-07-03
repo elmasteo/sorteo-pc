@@ -547,7 +547,9 @@
   },
   {
     "numero": "92",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Juan Camilo Ayala Gómez",
+    "telefono": "3162654306"
   },
   {
     "numero": "93",
