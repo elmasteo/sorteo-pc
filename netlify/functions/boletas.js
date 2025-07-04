@@ -3,7 +3,7 @@ const path = require('path');
 
 exports.handler = async () => {
   try {
-    const filePath = path.join(process.cwd(), 'boletas.json');
+    const filePath = path.join(__dirname, 'data', 'boletas.json');
     const raw = await fs.readFile(filePath, 'utf8');
     const data = JSON.parse(raw);
 
@@ -17,6 +17,7 @@ exports.handler = async () => {
       }
     };
   } catch (error) {
+    console.error('Error al leer boletas.json:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Error interno al leer boletas.json' })
