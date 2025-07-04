@@ -3,7 +3,7 @@ const path = require('path');
 
 exports.handler = async () => {
   try {
-    const filePath = path.resolve(__dirname, '../../boletas.json');
+    const filePath = path.join(process.cwd(), 'boletas.json');
     const raw = await fs.readFile(filePath, 'utf8');
     const data = JSON.parse(raw);
 
