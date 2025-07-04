@@ -193,6 +193,15 @@
         }
       }
 
+      .boleta {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .boleta:hover {
+        transform: scale(1.15);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+      }
+
   </style>
 </head>
 <body>
@@ -472,24 +481,34 @@ document.querySelectorAll('#filtros button').forEach(btn => {
       contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
     });
 
-  function iniciarCarruselInfinito() {
-    const wrapper = document.getElementById('carruselWrapper');
-    const contenido = document.getElementById('carruselContenido');
+    function iniciarCarruselInfinito() {
+      const wrapper = document.getElementById('carruselWrapper');
+      const contenido = document.getElementById('carruselContenido');
 
-    let scrollPos = 0;
-    const velocidad = 0.5; // puedes ajustar la velocidad aquí
+      let scrollPos = 0;
+      const velocidad = 0.5;
+      let animacionId;
 
-    function animar() {
-      scrollPos += velocidad;
-      if (scrollPos >= contenido.scrollWidth / 2) {
-        scrollPos = 0;
+      function animar() {
+        scrollPos += velocidad;
+        if (scrollPos >= contenido.scrollWidth / 2) {
+          scrollPos = 0;
+        }
+        wrapper.scrollLeft = scrollPos;
+        animacionId = requestAnimationFrame(animar);
       }
-      wrapper.scrollLeft = scrollPos;
-      requestAnimationFrame(animar);
+
+      wrapper.addEventListener('mouseenter', () => {
+        cancelAnimationFrame(animacionId);
+      });
+
+      wrapper.addEventListener('mouseleave', () => {
+        animar();
+      });
+
+      animar();
     }
 
-    animar();
-  }
 </script>
 
 </body>
