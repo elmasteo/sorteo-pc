@@ -396,8 +396,43 @@ document.querySelectorAll('#filtros button').forEach(btn => {
   <footer style="background:#333; color:#ccc; font-size:14px; padding:12px; text-align:center;">
   &copy; <span id="anio"></span> Made by Santiago Gómez
 </footer>
+
+<div id="carruselLoteria" style="overflow-x: auto; white-space: nowrap; padding: 10px 20px; background: #fff; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd;">
+  <h2 style="font-size: 18px; margin-bottom: 10px; text-align:left;">🎯 Últimos Resultados Lotería de Boyacá:</h2>
+  <div id="carruselContenido" style="display: inline-flex; gap: 16px;"></div>
+</div>
+
 <script>
   document.getElementById('anio').textContent = new Date().getFullYear();
+  fetch('https://ideasoft.com.co/loteria__/resultados')
+  .then(res => res.json())
+  .then(data => {
+    const premios = data
+      .filter(item => item.PremioNombre === 'PREMIO MAYOR')
+      .slice(0, 10); // primeros 10
+
+    const contenedor = document.getElementById('carruselContenido');
+    premios.forEach(p => {
+      const div = document.createElement('div');
+      div.style.minWidth = '180px';
+      div.style.background = '#f1f1f1';
+      div.style.padding = '10px';
+      div.style.borderRadius = '10px';
+      div.style.boxShadow = '0 2px 6px rgba(0,0,0,0.1)';
+      div.style.fontSize = '15px';
+      div.innerHTML = `
+        <strong style="font-size: 16px;">🎫 ${p.Billete}</strong><br>
+        <span style="color: #555;">📅 ${p.Fecha}</span>
+      `;
+      contenedor.appendChild(div);
+    });
+  })
+  .catch(err => {
+    console.error('Error al cargar resultados:', err);
+    const contenedor = document.getElementById('carruselContenido');
+    contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
+  });
+
 </script>
 
 </body>
