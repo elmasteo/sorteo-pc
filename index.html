@@ -447,30 +447,32 @@ document.querySelectorAll('#filtros button').forEach(btn => {
     return `${dia}/${mes}/${anio}`;
   }
 
-  fetch('https://ideasoft.com.co/loteria__/resultados')
-    .then(res => res.json())
-    .then(data => {
-      const premios = data
-        .filter(item => item.PremioNombre === 'PREMIO MAYOR')
-        .slice(0, 10);
+fetch('https://ideasoft.com.co/loteria__/resultados')
+  .then(res => res.json())
+  .then(data => {
+    const premios = data
+      .filter(item => item.PremioNombre === 'PREMIO MAYOR')
+      .sort((a, b) => new Date(a.Fecha) - new Date(b.Fecha)) // <-- Ordenar ascendente
+      .slice(-10); // <-- Los 10 más recientes pero en orden cronológico
 
-      const contenedor = document.getElementById('carruselContenido');
-      
-      [...premios, ...premios].forEach(p => { // duplicamos para efecto de loop continuo
-        const div = document.createElement('div');
-        div.className = 'carta-loteria';
-        div.innerHTML = `
-          <strong style="font-size: 16px;">🎫 ${p.Billete}</strong><br>
-          <span style="color: #555;">📅 ${formatearFechaISO(p.Fecha)}</span>
-        `;
-        contenedor.appendChild(div);
-      });
-    })
-    .catch(err => {
-      console.error('Error al cargar resultados:', err);
-      const contenedor = document.getElementById('carruselContenido');
-      contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
+    const contenedor = document.getElementById('carruselContenido');
+    
+    [...premios, ...premios].forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'carta-loteria';
+      div.innerHTML = `
+        <strong style="font-size: 16px;">🎫 ${p.Billete}</strong><br>
+        <span style="color: #555;">📅 ${formatearFechaISO(p.Fecha)}</span>
+      `;
+      contenedor.appendChild(div);
     });
+  })
+  .catch(err => {
+    console.error('Error al cargar resultados:', err);
+    const contenedor = document.getElementById('carruselContenido');
+    contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
+  });
+
 </script>
 
 </body>
