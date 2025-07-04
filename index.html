@@ -177,14 +177,20 @@
         will-change: transform;
       }
       .carta-loteria {
-        flex: 0 0 auto;
-        min-width: 160px;
-        background: #f1f1f1;
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        font-size: 15px;
-      }
+      flex: 0 0 auto;
+      min-width: 160px;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-size: 15px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .carta-loteria:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+    }
 
       @media (max-width: 600px) {
         .carta-loteria {
