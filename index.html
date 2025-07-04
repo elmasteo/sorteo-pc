@@ -163,6 +163,42 @@
       background: rgba(25, 118, 210, 0.05);
     }
 
+      #carruselLoteria {
+        overflow: hidden;
+        background: #fff;
+        border-top: 2px solid #ddd;
+        border-bottom: 2px solid #ddd;
+        padding: 10px 0;
+        position: relative;
+      }
+      #carruselContenido {
+        display: flex;
+        gap: 16px;
+        animation: scrollCarrusel 30s linear infinite;
+        will-change: transform;
+      }
+      .carta-loteria {
+        flex: 0 0 auto;
+        min-width: 160px;
+        background: #f1f1f1;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        font-size: 15px;
+      }
+
+      @keyframes scrollCarrusel {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+      }
+
+      @media (max-width: 600px) {
+        .carta-loteria {
+          min-width: 130px;
+          font-size: 14px;
+        }
+      }
+
   </style>
 </head>
 <body>
@@ -397,42 +433,47 @@ document.querySelectorAll('#filtros button').forEach(btn => {
   &copy; <span id="anio"></span> Made by Santiago Gómez
 </footer>
 
-<div id="carruselLoteria" style="overflow-x: auto; white-space: nowrap; padding: 10px 20px; background: #fff; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd;">
-  <h2 style="font-size: 18px; margin-bottom: 10px; text-align:left;">🎯 Últimos Resultados Lotería de Boyacá:</h2>
-  <div id="carruselContenido" style="display: inline-flex; gap: 16px;"></div>
+<div id="carruselLoteria">
+  <h2 style="font-size: 18px; margin: 8px 20px; text-align:left;">🎯 Últimos Resultados Lotería de Boyacá:</h2>
+  <div id="carruselWrapper" style="overflow: hidden;">
+    <div id="carruselContenido"></div>
+  </div>
 </div>
 
 <script>
   document.getElementById('anio').textContent = new Date().getFullYear();
+   function formatearFechaISO(fechaISO) {
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const anio = fecha.getFullYear();
+    return `${dia}/${mes}/${anio}`;
+  }
+
   fetch('https://ideasoft.com.co/loteria__/resultados')
-  .then(res => res.json())
-  .then(data => {
-    const premios = data
-      .filter(item => item.PremioNombre === 'PREMIO MAYOR')
-      .slice(0, 10); // primeros 10
+    .then(res => res.json())
+    .then(data => {
+      const premios = data
+        .filter(item => item.PremioNombre === 'PREMIO MAYOR')
+        .slice(0, 10);
 
-    const contenedor = document.getElementById('carruselContenido');
-    premios.forEach(p => {
-      const div = document.createElement('div');
-      div.style.minWidth = '180px';
-      div.style.background = '#f1f1f1';
-      div.style.padding = '10px';
-      div.style.borderRadius = '10px';
-      div.style.boxShadow = '0 2px 6px rgba(0,0,0,0.1)';
-      div.style.fontSize = '15px';
-      div.innerHTML = `
-        <strong style="font-size: 16px;">🎫 ${p.Billete}</strong><br>
-        <span style="color: #555;">📅 ${p.Fecha}</span>
-      `;
-      contenedor.appendChild(div);
+      const contenedor = document.getElementById('carruselContenido');
+      
+      [...premios, ...premios].forEach(p => { // duplicamos para efecto de loop continuo
+        const div = document.createElement('div');
+        div.className = 'carta-loteria';
+        div.innerHTML = `
+          <strong style="font-size: 16px;">🎫 ${p.Billete}</strong><br>
+          <span style="color: #555;">📅 ${formatearFechaISO(p.Fecha)}</span>
+        `;
+        contenedor.appendChild(div);
+      });
+    })
+    .catch(err => {
+      console.error('Error al cargar resultados:', err);
+      const contenedor = document.getElementById('carruselContenido');
+      contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
     });
-  })
-  .catch(err => {
-    console.error('Error al cargar resultados:', err);
-    const contenedor = document.getElementById('carruselContenido');
-    contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
-  });
-
 </script>
 
 </body>
