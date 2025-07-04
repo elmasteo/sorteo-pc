@@ -202,6 +202,13 @@
   </style>
 </head>
 <body>
+  
+<div id="carruselLoteria">
+  <h2 style="font-size: 18px; margin: 8px 20px; text-align:left;">🎯 Últimos Resultados Lotería de Boyacá:</h2>
+  <div id="carruselWrapper" style="overflow: hidden;">
+    <div id="carruselContenido"></div>
+  </div>
+</div>
   <h1>
   Gran Rifa - Gana un PC - Juega el 6 de Septiembre 2025 - Últimas cifras de la lotería de Boyacá<br>
   <span id="contador">Cargando...</span>
@@ -432,13 +439,6 @@ document.querySelectorAll('#filtros button').forEach(btn => {
   <footer style="background:#333; color:#ccc; font-size:14px; padding:12px; text-align:center;">
   &copy; <span id="anio"></span> Made by Santiago Gómez
 </footer>
-
-<div id="carruselLoteria">
-  <h2 style="font-size: 18px; margin: 8px 20px; text-align:left;">🎯 Últimos Resultados Lotería de Boyacá:</h2>
-  <div id="carruselWrapper" style="overflow: hidden;">
-    <div id="carruselContenido"></div>
-  </div>
-</div>
 
 <script>
   document.getElementById('anio').textContent = new Date().getFullYear();
