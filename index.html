@@ -283,7 +283,7 @@
 
     let todasLasBoletas = [];
 
-    fetch('boletas.json')
+    fetch('/.netlify/functions/boletas')
       .then(res => res.json())
       .then(boletas => {
         todasLasBoletas = boletas;
