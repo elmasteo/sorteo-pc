@@ -285,10 +285,20 @@
 
     fetch('/.netlify/functions/boletas')
       .then(res => res.json())
-      .then(boletas => {
-        todasLasBoletas = boletas;
-        renderBoletas(); // render inicial
+      .then(data => {
+        if (Array.isArray(data)) {
+          todasLasBoletas = data;
+          renderBoletas(); // render inicial
+        } else {
+          console.error('Error al cargar boletas:', data.error || data);
+          document.getElementById('boletas').innerHTML = '<p style="color:red;">Error al cargar boletas</p>';
+        }
+      })
+      .catch(err => {
+        console.error('Error de red:', err);
+        document.getElementById('boletas').innerHTML = '<p style="color:red;">Error de red</p>';
       });
+
 
     function renderBoletas(filtro = 'todos') {
       const contenedor = document.getElementById('boletas');
