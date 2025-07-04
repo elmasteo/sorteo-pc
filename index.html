@@ -311,8 +311,6 @@
       seleccionada = num;
       document.getElementById('boletaNum').textContent = num.toString().padStart(2, '0');
       document.getElementById('modalOverlay').style.display = 'flex';
-      document.getElementById('verPremioContainer').style.display = 'none';
-
     }
 
     const telefonoInput = document.getElementById('telefono');
@@ -376,8 +374,6 @@
       if (e.target.id === 'modalOverlay') {
         e.target.style.display = 'none';
         document.getElementById('errorTelefono').style.display = 'none';
-        document.getElementById('verPremioContainer').style.display = 'flex';
-
       }
     });
 
