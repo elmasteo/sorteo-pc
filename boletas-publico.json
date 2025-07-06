@@ -1,0 +1,402 @@
+[
+  {
+    "numero": "00",
+    "estado": "libre"
+  },
+  {
+    "numero": "01",
+    "estado": "libre"
+  },
+  {
+    "numero": "02",
+    "estado": "pagado"
+  },
+  {
+    "numero": "03",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "04",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "05",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "06",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "07",
+    "estado": "pagado"
+  },
+  {
+    "numero": "08",
+    "estado": "libre"
+  },
+  {
+    "numero": "09",
+    "estado": "libre"
+  },
+  {
+    "numero": "10",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "11",
+    "estado": "pagado"
+  },
+  {
+    "numero": "12",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "13",
+    "estado": "pagado"
+  },
+  {
+    "numero": "14",
+    "estado": "pagado"
+  },
+  {
+    "numero": "15",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "16",
+    "estado": "libre"
+  },
+  {
+    "numero": "17",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "18",
+    "estado": "pagado"
+  },
+  {
+    "numero": "19",
+    "estado": "pagado"
+  },
+  {
+    "numero": "20",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "21",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "22",
+    "estado": "pagado"
+  },
+  {
+    "numero": "23",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "24",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "25",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "26",
+    "estado": "pagado"
+  },
+  {
+    "numero": "27",
+    "estado": "pagado"
+  },
+  {
+    "numero": "28",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "29",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "30",
+    "estado": "pagado"
+  },
+  {
+    "numero": "31",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "32",
+    "estado": "pagado"
+  },
+  {
+    "numero": "33",
+    "estado": "libre"
+  },
+  {
+    "numero": "34",
+    "estado": "pagado"
+  },
+  {
+    "numero": "35",
+    "estado": "pagado"
+  },
+  {
+    "numero": "36",
+    "estado": "libre"
+  },
+  {
+    "numero": "37",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "38",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "39",
+    "estado": "libre"
+  },
+  {
+    "numero": "40",
+    "estado": "libre"
+  },
+  {
+    "numero": "41",
+    "estado": "libre"
+  },
+  {
+    "numero": "42",
+    "estado": "libre"
+  },
+  {
+    "numero": "43",
+    "estado": "pagado"
+  },
+  {
+    "numero": "44",
+    "estado": "pagado"
+  },
+  {
+    "numero": "45",
+    "estado": "pagado"
+  },
+  {
+    "numero": "46",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "47",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "48",
+    "estado": "pagado"
+  },
+  {
+    "numero": "49",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "50",
+    "estado": "pagado"
+  },
+  {
+    "numero": "51",
+    "estado": "libre"
+  },
+  {
+    "numero": "52",
+    "estado": "libre"
+  },
+  {
+    "numero": "53",
+    "estado": "libre"
+  },
+  {
+    "numero": "54",
+    "estado": "libre"
+  },
+  {
+    "numero": "55",
+    "estado": "libre"
+  },
+  {
+    "numero": "56",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "57",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "58",
+    "estado": "libre"
+  },
+  {
+    "numero": "59",
+    "estado": "libre"
+  },
+  {
+    "numero": "60",
+    "estado": "pagado"
+  },
+  {
+    "numero": "61",
+    "estado": "libre"
+  },
+  {
+    "numero": "62",
+    "estado": "libre"
+  },
+  {
+    "numero": "63",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "64",
+    "estado": "libre"
+  },
+  {
+    "numero": "65",
+    "estado": "libre"
+  },
+  {
+    "numero": "66",
+    "estado": "pagado"
+  },
+  {
+    "numero": "67",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "68",
+    "estado": "libre"
+  },
+  {
+    "numero": "69",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "70",
+    "estado": "pagado"
+  },
+  {
+    "numero": "71",
+    "estado": "pagado"
+  },
+  {
+    "numero": "72",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "73",
+    "estado": "pagado"
+  },
+  {
+    "numero": "74",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "75",
+    "estado": "pagado"
+  },
+  {
+    "numero": "76",
+    "estado": "libre"
+  },
+  {
+    "numero": "77",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "78",
+    "estado": "libre"
+  },
+  {
+    "numero": "79",
+    "estado": "pagado"
+  },
+  {
+    "numero": "80",
+    "estado": "pagado"
+  },
+  {
+    "numero": "81",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "82",
+    "estado": "pagado"
+  },
+  {
+    "numero": "83",
+    "estado": "libre"
+  },
+  {
+    "numero": "84",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "85",
+    "estado": "pagado"
+  },
+  {
+    "numero": "86",
+    "estado": "libre"
+  },
+  {
+    "numero": "87",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "88",
+    "estado": "libre"
+  },
+  {
+    "numero": "89",
+    "estado": "pagado"
+  },
+  {
+    "numero": "90",
+    "estado": "pagado"
+  },
+  {
+    "numero": "91",
+    "estado": "libre"
+  },
+  {
+    "numero": "92",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "93",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "94",
+    "estado": "libre"
+  },
+  {
+    "numero": "95",
+    "estado": "libre"
+  },
+  {
+    "numero": "96",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "97",
+    "estado": "pendiente"
+  },
+  {
+    "numero": "98",
+    "estado": "pagado"
+  },
+  {
+    "numero": "99",
+    "estado": "libre"
+  }
+]

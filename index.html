@@ -300,8 +300,9 @@
     let seleccionada = null;
 
     let todasLasBoletas = [];
-
-    fetch('boletas.json')
+/*boletas.json*/
+    
+    fetch('boletas-publico.json')
       .then(res => res.json())
       .then(boletas => {
         todasLasBoletas = boletas;
