@@ -465,6 +465,7 @@ document.querySelectorAll('#filtros button').forEach(btn => {
     return `${dia}/${mes}/${anio}`;
   }
 
+/*
   fetch('https://ideasoft.com.co/loteria__/resultados')
     .then(res => res.json())
     .then(data => {
@@ -495,6 +496,50 @@ document.querySelectorAll('#filtros button').forEach(btn => {
       const contenedor = document.getElementById('carruselContenido');
       contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
     });
+*/
+
+  fetch('https://ideasoft.com.co/loteria__/resultados')
+  .then(res => {
+    if (!res.ok) throw new Error("Error externo");
+    return res.json();
+  })
+  .then(data => renderResultados(data))
+  .catch(err => {
+    console.warn('Falla en servicio principal, usando respaldo:', err);
+    fetch('respaldo-loteria.json')
+      .then(res => res.json())
+      .then(data => renderResultados(data))
+      .catch(err2 => {
+        console.error('Fallo también el respaldo:', err2);
+        const contenedor = document.getElementById('carruselContenido');
+        contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
+      });
+  });
+
+function renderResultados(data) {
+  const premios = data
+    .filter(item => item.PremioNombre === 'PREMIO MAYOR')
+    .sort((a, b) => new Date(a.Fecha) - new Date(b.Fecha))
+    .slice(-10);
+
+  const contenedor = document.getElementById('carruselContenido');
+  contenedor.innerHTML = ''; // limpiar antes de renderizar
+
+  for (let i = 0; i < 2; i++) {
+    premios.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'carta-loteria';
+      div.innerHTML = `
+        <strong style="font-size: 16px;">🎫 ${p.Billete}</strong><br>
+        <span style="color: #555;">📅 ${formatearFechaISO(p.Fecha)}</span>
+      `;
+      contenedor.appendChild(div);
+    });
+  }
+
+  iniciarCarruselInfinito();
+}
+
 
     function iniciarCarruselInfinito() {
       const wrapper = document.getElementById('carruselWrapper');
