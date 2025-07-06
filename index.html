@@ -458,37 +458,20 @@ document.querySelectorAll('#filtros button').forEach(btn => {
 <script>
   document.getElementById('anio').textContent = new Date().getFullYear();
 function formatearFechaISO(fechaISO) {
-  if (fechaISO.includes('T')) {
-    // Formato ISO completo desde la API externa
-    const fecha = new Date(fechaISO);
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const anio = fecha.getFullYear();
-    return `${dia}/${mes}/${anio}`;
-  } else {
-    // Formato plano del JSON de respaldo
-    const [anio, mes, dia] = fechaISO.split('-');
-    return `${dia}/${mes}/${anio}`;
-  }
+  const [anio, mes, dia] = fechaISO.split('-');
+  return `${dia}/${mes}/${anio}`;
 }
 
-  fetch('https://ideasoft.com.co/loteria__/resultados')
-  .then(res => {
-    if (!res.ok) throw new Error("Error externo");
-    return res.json();
-  })
+
+fetch('respaldo-loteria.json')
+  .then(res => res.json())
   .then(data => renderResultados(data))
   .catch(err => {
-    console.warn('Falla en servicio principal, usando respaldo:', err);
-    fetch('respaldo-loteria.json')
-      .then(res => res.json())
-      .then(data => renderResultados(data))
-      .catch(err2 => {
-        console.error('Fallo también el respaldo:', err2);
-        const contenedor = document.getElementById('carruselContenido');
-        contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
-      });
+    console.error('No se pudieron cargar los resultados:', err);
+    const contenedor = document.getElementById('carruselContenido');
+    contenedor.innerHTML = '<div style="color:red;">No se pudieron cargar los resultados</div>';
   });
+
 
 function renderResultados(data) {
   const premios = data
