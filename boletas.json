@@ -1,7 +1,9 @@
 [
   {
     "numero": "00",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Santiago gomez",
+    "telefono": "3157862008"
   },
   {
     "numero": "01",
