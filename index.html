@@ -458,8 +458,18 @@ document.querySelectorAll('#filtros button').forEach(btn => {
 <script>
   document.getElementById('anio').textContent = new Date().getFullYear();
 function formatearFechaISO(fechaISO) {
-  const [anio, mes, dia] = fechaISO.split('-');
-  return `${dia}/${mes}/${anio}`;
+  if (fechaISO.includes('T')) {
+    // Formato ISO completo desde la API externa
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const anio = fecha.getFullYear();
+    return `${dia}/${mes}/${anio}`;
+  } else {
+    // Formato plano del JSON de respaldo
+    const [anio, mes, dia] = fechaISO.split('-');
+    return `${dia}/${mes}/${anio}`;
+  }
 }
 
   fetch('https://ideasoft.com.co/loteria__/resultados')
