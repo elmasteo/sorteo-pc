@@ -469,9 +469,19 @@ document.querySelectorAll('#filtros button').forEach(btn => {
 
 <footer style="background:#333; color:#ccc; font-size:14px; padding:12px; text-align:center;">
   &copy; <span id="anio"></span> Made by Santiago Gómez
-  <a href="https://wa.me/573157862008" target="_blank" style="margin-left: 10px; vertical-align: middle;">
-    <img src="assets/whatssapp.png" alt="WhatsApp" style="height: 20px; vertical-align: middle;">
-  </a>
+  <a href="https://wa.me/573157862008" target="_blank" style="
+    margin-left: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  " onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.2)';"
+     onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+    <img src="assets/whatssapp.png" alt="WhatsApp" style="height: 22px; width: 22px;">
+  </a> 
 </footer>
 
 
