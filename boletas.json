@@ -249,9 +249,9 @@
   },
   {
     "numero": "42",
-    "estado": "libre",
-    "nombre": "",
-    "telefono": ""
+    "estado": "pendiente",
+    "nombre": "Juan Pablo Gordillo",
+    "telefono": "3002464979"
   },
   {
     "numero": "43",
