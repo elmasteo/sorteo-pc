@@ -14,6 +14,7 @@ exports.handler = async (event) => {
   const filePath = "ganador.json";
   const branch = "master";
 
+  // Si ganador es string, no hagas JSON.stringify para mensaje
   const ganadorData = JSON.stringify(ganador, null, 2);
   const encodedContent = Buffer.from(ganadorData).toString('base64');
 
@@ -35,7 +36,7 @@ exports.handler = async (event) => {
       owner: repoOwner,
       repo: repoName,
       path: filePath,
-      message: `🎯 Ganador: ${ganador.numero}`,
+      message: `🎯 Ganador: ${ganador}`, // Aquí usa ganador directamente
       content: encodedContent,
       branch,
       sha,
