@@ -5,7 +5,7 @@ exports.handler = async (event) => {
     return { statusCode: 403, body: 'Clave incorrecta' };
   }
 
-  const token = process.env.GITHUB_TOKEN;
+  const token = process.env.GH_TOKEN;
   const repoOwner = "elmasteo";
   const repoName = "sorteo-pc";
   const branch = "master";
