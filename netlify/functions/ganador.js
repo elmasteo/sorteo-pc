@@ -1,55 +1,67 @@
 exports.handler = async (event) => {
-  const { Octokit } = await import("@octokit/rest");
-
   const { auth, ganador } = JSON.parse(event.body || '{}');
 
   if (auth !== process.env.ADMIN_KEY) {
     return { statusCode: 403, body: 'Clave incorrecta' };
   }
 
-  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-
+  const token = process.env.GITHUB_TOKEN;
   const repoOwner = "elmasteo";
   const repoName = "sorteo-pc";
-  const filePath = "ganador.json";
   const branch = "master";
+  const filePath = "ganador.json";
 
-  // Si ganador es string, no hagas JSON.stringify para mensaje
-  const ganadorData = JSON.stringify(ganador, null, 2);
-  const encodedContent = Buffer.from(ganadorData).toString('base64');
+  const apiBase = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
 
-  try {
-    let sha = null;
-    try {
-      const { data } = await octokit.rest.repos.getContent({
-        owner: repoOwner,
-        repo: repoName,
-        path: filePath,
-        ref: branch,
-      });
-      sha = data.sha;
-    } catch (err) {
-      if (err.status !== 404) throw err;
+  const ganadorJson = JSON.stringify(ganador, null, 2);
+  const encodedContent = Buffer.from(ganadorJson).toString('base64');
+
+  let sha = null;
+
+  // 1. Verificar si el archivo existe (para obtener el SHA)
+  const getResp = await fetch(`${apiBase}?ref=${branch}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "User-Agent": "netlify-function",
+      Accept: "application/vnd.github.v3+json",
     }
+  });
 
-    await octokit.rest.repos.createOrUpdateFileContents({
-      owner: repoOwner,
-      repo: repoName,
-      path: filePath,
-      message: `🎯 Ganador: ${ganador}`, // Aquí usa ganador directamente
-      content: encodedContent,
-      branch,
-      sha,
-    });
-
-    return {
-      statusCode: 200,
-      body: "Ganador actualizado correctamente",
-    };
-  } catch (err) {
+  if (getResp.ok) {
+    const json = await getResp.json();
+    sha = json.sha;
+  } else if (getResp.status !== 404) {
     return {
       statusCode: 500,
-      body: `Error: ${err.message}`,
+      body: `Error al verificar el archivo: ${await getResp.text()}`,
     };
   }
+
+  // 2. Crear o actualizar el archivo ganador.json
+  const putResp = await fetch(apiBase, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "User-Agent": "netlify-function",
+      Accept: "application/vnd.github.v3+json",
+    },
+    body: JSON.stringify({
+      message: `🎯 Ganador: ${ganador}`,
+      content: encodedContent,
+      branch,
+      ...(sha && { sha }), // solo incluye SHA si existe
+    }),
+  });
+
+  if (!putResp.ok) {
+    return {
+      statusCode: 500,
+      body: `Error al guardar archivo: ${await putResp.text()}`,
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: "Ganador actualizado correctamente",
+  };
 };
