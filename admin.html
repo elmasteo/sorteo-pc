@@ -372,24 +372,21 @@
 
     function marcarGanador() {
   const input = prompt("Escribe el número de la boleta ganadora:");
-  const numero = input.trim();
+  const numeroGanador = input.trim();
 
-  if (!numero.match(/^\d{2}$/)) {
+  if (!numeroGanador.match(/^\d{2}$/)) {
     alert("Número inválido. Debe tener exactamente dos dígitos, ej: 03, 15, 99");
     return;
   }
 
-
-  const numero = input.trim();
-
   fetch('/.netlify/functions/ganador', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ auth: clave, ganador: numero })
+    body: JSON.stringify({ auth: clave, ganador: numeroGanador })
   })
   .then(res => {
     if (res.ok) {
-      alert(`Boleta #${numero} marcada como ganadora.`);
+      alert(`Boleta #${numeroGanador} marcada como ganadora.`);
     } else {
       alert("No se pudo marcar el ganador. Verifica la clave o el número.");
     }
