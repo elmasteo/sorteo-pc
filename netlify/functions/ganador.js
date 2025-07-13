@@ -1,4 +1,4 @@
-import { Octokit } from "@octokit/core";
+const { Octokit } = require("@octokit/rest");
 
 exports.handler = async (event) => {
   const { auth, ganador } = JSON.parse(event.body || '{}');
@@ -11,43 +11,45 @@ exports.handler = async (event) => {
 
   const repoOwner = "elmasteo";
   const repoName = "sorteo-pc";
-  const filePath = "ganador.json"; // puedes cambiar la carpeta si lo deseas
-  const branch = "master"; // o 'master'
+  const filePath = "ganador.json";
+  const branch = "master";
 
   const ganadorData = JSON.stringify(ganador, null, 2);
+  const encodedContent = Buffer.from(ganadorData).toString('base64');
 
   try {
-    // Verifica si ya existe el archivo para obtener su SHA
+    // Obtener SHA del archivo si ya existe
     let sha = null;
     try {
-      const { data } = await octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+      const { data } = await octokit.repos.getContent({
         owner: repoOwner,
         repo: repoName,
         path: filePath,
       });
       sha = data.sha;
     } catch (err) {
-      if (err.status !== 404) throw err; // Ignora si no existe
+      if (err.status !== 404) throw err;
     }
 
-    await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+    // Subir archivo con commit
+    await octokit.repos.createOrUpdateFileContents({
       owner: repoOwner,
       repo: repoName,
       path: filePath,
       message: `🎯 Ganador: ${ganador.numero}`,
-      content: Buffer.from(ganadorData).toString('base64'),
+      content: encodedContent,
       branch,
       sha,
     });
 
     return {
       statusCode: 200,
-      body: "Ganador actualizado correctamente"
+      body: "Ganador actualizado correctamente",
     };
   } catch (err) {
     return {
       statusCode: 500,
-      body: `Error: ${err.message}`
+      body: `Error: ${err.message}`,
     };
   }
 };
