@@ -1,6 +1,6 @@
-const { Octokit } = require("@octokit/rest");
-
 exports.handler = async (event) => {
+  const { Octokit } = await import("@octokit/rest");
+
   const { auth, ganador } = JSON.parse(event.body || '{}');
 
   if (auth !== process.env.ADMIN_KEY) {
@@ -18,7 +18,6 @@ exports.handler = async (event) => {
   const encodedContent = Buffer.from(ganadorData).toString('base64');
 
   try {
-    // Obtener SHA del archivo si ya existe
     let sha = null;
     try {
       const { data } = await octokit.repos.getContent({
@@ -31,7 +30,6 @@ exports.handler = async (event) => {
       if (err.status !== 404) throw err;
     }
 
-    // Subir archivo con commit
     await octokit.repos.createOrUpdateFileContents({
       owner: repoOwner,
       repo: repoName,
