@@ -13,7 +13,7 @@ exports.handler = async (event) => {
 
   const apiBase = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
 
-  const ganadorJson = JSON.stringify(ganador, null, 2);
+  const ganadorJson = JSON.stringify({ numero: ganador }, null, 2);
   const encodedContent = Buffer.from(ganadorJson).toString('base64');
 
   let sha = null;
