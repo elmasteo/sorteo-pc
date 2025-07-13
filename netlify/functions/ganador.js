@@ -1,4 +1,4 @@
-const { Octokit } = require("@octokit/core");
+import { Octokit } from "@octokit/core";
 
 exports.handler = async (event) => {
   const { auth, ganador } = JSON.parse(event.body || '{}');
