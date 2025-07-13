@@ -3,7 +3,7 @@ import { Octokit } from "@octokit/core";
 exports.handler = async (event) => {
   const { auth, ganador } = JSON.parse(event.body || '{}');
 
-  if (auth !== process.env.ADMIN_CLAVE) {
+  if (auth !== process.env.ADMIN_KEY) {
     return { statusCode: 403, body: 'Clave incorrecta' };
   }
 
