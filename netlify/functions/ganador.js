@@ -20,17 +20,18 @@ exports.handler = async (event) => {
   try {
     let sha = null;
     try {
-      const { data } = await octokit.repos.getContent({
+      const { data } = await octokit.rest.repos.getContent({
         owner: repoOwner,
         repo: repoName,
         path: filePath,
+        ref: branch,
       });
       sha = data.sha;
     } catch (err) {
       if (err.status !== 404) throw err;
     }
 
-    await octokit.repos.createOrUpdateFileContents({
+    await octokit.rest.repos.createOrUpdateFileContents({
       owner: repoOwner,
       repo: repoName,
       path: filePath,
