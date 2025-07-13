@@ -324,7 +324,26 @@
       .then(boletas => {
         todasLasBoletas = boletas;
         renderBoletas(); // render inicial
+
+        // Aquí: cargar y resaltar boleta ganadora
+        fetch('ganador.json')
+          .then(res => res.json())
+          .then(data => {
+            const ganadorNum = data.numero;
+            if (!ganadorNum) return;
+
+            const boletaGanadora = document.querySelector(`.boleta[data-numero="${ganadorNum}"]`);
+
+            if (boletaGanadora) {
+              boletaGanadora.style.border = "4px solid red";
+              boletaGanadora.style.boxShadow = "0 0 12px 4px rgba(255,0,0,0.6)";
+              boletaGanadora.setAttribute('title', '🎯 Boleta ganadora');
+              document.getElementById("avisoGanador").textContent = `🎯 Boleta ganadora: #${ganadorNum}`;
+            }
+          })
+          .catch(err => console.warn('No hay ganador definido aún'));
       });
+
 
     function renderBoletas(filtro = 'todos') {
       const contenedor = document.getElementById('boletas');
@@ -561,23 +580,6 @@ function renderResultados(data) {
       animar();
     }
 
-    fetch('ganador.json')
-  .then(res => res.json())
-  .then(data => {
-    const ganadorNum = data.numero;
-    if (!ganadorNum) return;
-
-    const boletaGanadora = document.querySelector(`.boleta.pagado:nth-child(n)[data-numero="${ganadorNum}"]`) ||
-                           document.querySelector(`.boleta[data-numero="${ganadorNum}"]`);
-
-    if (boletaGanadora) {
-      boletaGanadora.style.border = "4px solid red";
-      boletaGanadora.style.boxShadow = "0 0 12px 4px rgba(255,0,0,0.6)";
-      boletaGanadora.setAttribute('title', '🎯 Boleta ganadora');
-      document.getElementById("avisoGanador").textContent = `🎯 Boleta ganadora: #${ganadorNum}`;
-    }
-  })
-  .catch(err => console.warn('No hay ganador definido aún'));
 </script>
 
 </body>
