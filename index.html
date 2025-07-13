@@ -285,6 +285,8 @@
   </div>
 </div>
 
+<div id="avisoGanador" style="font-size:18px; color:red; font-weight:bold; margin: 10px;"></div>
+
 <div id="filtros" style="padding: 10px; font-size: 14px;">
   <button data-filtro="todos" style="background:#e0e0e0; padding:4px 10px; border-radius:5px; margin: 4px; border: none; cursor: pointer;">Todos</button>
   <button data-filtro="libre" style="background:#9e9e9e; color:white; padding:4px 10px; border-radius:5px; margin: 4px; border: none; cursor: pointer;">Disponible</button>
@@ -333,6 +335,7 @@
       filtradas.forEach(b => {
         const div = document.createElement('div');
         div.className = `boleta ${b.estado}`;
+        div.setAttribute('data-numero', b.numero);
         div.textContent = b.numero;
         if (b.estado === 'libre') {
           div.onclick = () => seleccionar(b.numero);
@@ -340,6 +343,11 @@
         contenedor.appendChild(div);
       });
     }
+    
+    if (boletaGanadora) {
+  document.getElementById("avisoGanador").textContent = `🎯 Boleta ganadora: #${ganadorNum}`;
+}
+
 
     function seleccionar(num) {
       seleccionada = num;
@@ -557,6 +565,24 @@ function renderResultados(data) {
 
       animar();
     }
+
+    fetch('ganador.json')
+  .then(res => res.json())
+  .then(data => {
+    const ganadorNum = data.numero;
+    if (!ganadorNum) return;
+
+    const boletaGanadora = document.querySelector(`.boleta.pagado:nth-child(n)[data-numero="${ganadorNum}"]`) ||
+                           document.querySelector(`.boleta[data-numero="${ganadorNum}"]`);
+
+    if (boletaGanadora) {
+      boletaGanadora.style.border = "4px solid red";
+      boletaGanadora.style.boxShadow = "0 0 12px 4px rgba(255,0,0,0.6)";
+      boletaGanadora.setAttribute('title', '🎯 Boleta ganadora');
+    }
+  })
+  .catch(err => console.warn('No hay ganador definido aún'));
+
 
 </script>
 

@@ -187,6 +187,19 @@
 </div>
 <div id="divConfirmados"></div>
 
+<div style="text-align:center; margin: 30px 0;">
+  <button onclick="marcarGanador()" style="
+    background: #ff9800;
+    color: white;
+    font-weight: bold;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  ">🎯 Marcar Ganador</button>
+</div>
 
   <script>
     let clave = '';
@@ -356,6 +369,29 @@
 
       return await res.json();
     }
+
+    function marcarGanador() {
+  const input = prompt("Escribe el número de la boleta ganadora:");
+  if (!input || !/^\d+$/.test(input.trim())) {
+    alert("Número inválido.");
+    return;
+  }
+
+  const numero = input.trim();
+
+  fetch('/.netlify/functions/ganador', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ auth: clave, ganador: numero })
+  })
+  .then(res => {
+    if (res.ok) {
+      alert(`Boleta #${numero} marcada como ganadora.`);
+    } else {
+      alert("No se pudo marcar el ganador. Verifica la clave o el número.");
+    }
+  });
+}
 
 
     init();
