@@ -372,10 +372,13 @@
 
     function marcarGanador() {
   const input = prompt("Escribe el número de la boleta ganadora:");
-  if (!input || !/^\d+$/.test(input.trim())) {
-    alert("Número inválido.");
+  const numero = input.trim();
+
+  if (!numero.match(/^\d{2}$/)) {
+    alert("Número inválido. Debe tener exactamente dos dígitos, ej: 03, 15, 99");
     return;
   }
+
 
   const numero = input.trim();
 
