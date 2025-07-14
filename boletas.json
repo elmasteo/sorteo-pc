@@ -463,7 +463,9 @@
   },
   {
     "numero": "78",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "ANDRES MAURICIO CLAVIJO MANTILLA",
+    "telefono": "3002117606"
   },
   {
     "numero": "79",
