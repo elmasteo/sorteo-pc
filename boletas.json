@@ -5,7 +5,9 @@
   },
   {
     "numero": "01",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Gabriel Paez",
+    "telefono": "3238732539"
   },
   {
     "numero": "02",
