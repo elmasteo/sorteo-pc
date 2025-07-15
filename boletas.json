@@ -1,7 +1,9 @@
 [
   {
     "numero": "00",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Julián Gómez",
+    "telefono": "3228537363"
   },
   {
     "numero": "01",
