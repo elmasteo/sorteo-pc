@@ -11,5 +11,7 @@
   { "Billete": "3859", "Fecha": "2025-06-28", "PremioNombre": "PREMIO MAYOR" },
   { "Billete": "0619", "Fecha": "2025-07-05", "PremioNombre": "PREMIO MAYOR" },
   { "Billete": "7975", "Fecha": "2025-07-12", "PremioNombre": "PREMIO MAYOR" },
-  { "Billete": "8794", "Fecha": "2025-07-19", "PremioNombre": "PREMIO MAYOR" }
+  { "Billete": "8794", "Fecha": "2025-07-19", "PremioNombre": "PREMIO MAYOR" },
+  { "Billete": "5605", "Fecha": "2025-07-26", "PremioNombre": "PREMIO MAYOR" },
+  { "Billete": "8038", "Fecha": "2025-08-02", "PremioNombre": "PREMIO MAYOR" }
 ]
