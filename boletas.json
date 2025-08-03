@@ -349,7 +349,9 @@
   },
   {
     "numero": "58",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Mercedes Beltran",
+    "telefono": "3214113307"
   },
   {
     "numero": "59",
