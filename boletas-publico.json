@@ -17,15 +17,15 @@
   },
   {
     "numero": "04",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "05",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "06",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "07",
@@ -37,11 +37,11 @@
   },
   {
     "numero": "09",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "10",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "11",
@@ -61,7 +61,7 @@
   },
   {
     "numero": "15",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "16",
@@ -81,11 +81,11 @@
   },
   {
     "numero": "20",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "21",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "22",
@@ -101,7 +101,7 @@
   },
   {
     "numero": "25",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "26",
@@ -117,7 +117,7 @@
   },
   {
     "numero": "29",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "30",
@@ -133,7 +133,7 @@
   },
   {
     "numero": "33",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "34",
@@ -145,7 +145,7 @@
   },
   {
     "numero": "36",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "37",
@@ -185,7 +185,7 @@
   },
   {
     "numero": "46",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "47",
@@ -197,7 +197,7 @@
   },
   {
     "numero": "49",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "50",
@@ -213,7 +213,7 @@
   },
   {
     "numero": "53",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "54",
@@ -221,7 +221,7 @@
   },
   {
     "numero": "55",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "56",
@@ -229,7 +229,7 @@
   },
   {
     "numero": "57",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "58",
@@ -253,7 +253,7 @@
   },
   {
     "numero": "63",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "64",
@@ -269,11 +269,11 @@
   },
   {
     "numero": "67",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "68",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "69",
@@ -305,7 +305,7 @@
   },
   {
     "numero": "76",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "77",
@@ -345,15 +345,15 @@
   },
   {
     "numero": "86",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "87",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "88",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "89",
@@ -365,11 +365,11 @@
   },
   {
     "numero": "91",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "92",
-    "estado": "pendiente"
+    "estado": "pagado"
   },
   {
     "numero": "93",
