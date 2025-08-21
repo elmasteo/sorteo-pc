@@ -187,7 +187,9 @@
   },
   {
     "numero": "31",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Julian Leguizamon",
+    "telefono": "3183823499"
   },
   {
     "numero": "32",
