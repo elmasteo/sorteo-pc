@@ -281,7 +281,9 @@
   },
   {
     "numero": "47",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Omar Gonzáles",
+    "telefono": "3245459800"
   },
   {
     "numero": "48",
