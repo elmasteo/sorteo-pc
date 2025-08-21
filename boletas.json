@@ -385,7 +385,9 @@
   },
   {
     "numero": "64",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Andrés Calderón",
+    "telefono": "3208608787"
   },
   {
     "numero": "65",
