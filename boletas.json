@@ -549,7 +549,9 @@
   },
   {
     "numero": "93",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Alberto Gómez",
+    "telefono": "3153103595"
   },
   {
     "numero": "94",
