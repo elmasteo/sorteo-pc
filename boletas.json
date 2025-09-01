@@ -19,7 +19,9 @@
   },
   {
     "numero": "03",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Diego Ariza",
+    "telefono": "3044096354"
   },
   {
     "numero": "04",
