@@ -479,7 +479,9 @@
   },
   {
     "numero": "81",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Lina Heredia",
+    "telefono": "3204260009"
   },
   {
     "numero": "82",
