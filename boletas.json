@@ -409,7 +409,9 @@
   },
   {
     "numero": "69",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "ANDREA BARRERA PARRA",
+    "telefono": "3102583657"
   },
   {
     "numero": "70",
