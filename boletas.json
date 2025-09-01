@@ -337,7 +337,9 @@
   },
   {
     "numero": "56",
-    "estado": "libre"
+    "estado": "pendiente",
+    "nombre": "Ligia Gómez",
+    "telefono": "3112215878"
   },
   {
     "numero": "57",
